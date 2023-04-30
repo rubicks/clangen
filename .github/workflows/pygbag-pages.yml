@@ -1,0 +1,22 @@
+# clangen/.github/workflows/pygbag-pages.yml
+
+name: pygbag pages
+on: [push]
+jobs:
+  build-pygbag:
+    name: pygbag build gh pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: pygbag build
+        run: |
+            python3 -m pip install pygbag
+            python3 -m pygbag --ume_block 0 --build $GITHUB_WORKSPACE/main.py
+            cp convert.html build/web/
+            cp converter.js build/web/
+            cp techsupport.html build/web/
+      - name: gh pages
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: build/web
